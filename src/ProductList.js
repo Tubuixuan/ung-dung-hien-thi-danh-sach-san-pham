@@ -7,7 +7,8 @@ const ProductList = () => {
   const [priceFilter, setPriceFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [nameSortOrder, setNameSortOrder] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState(""); // THÊM MỚI
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [colorFilter, setColorFilter] = useState(""); // THÊM MỚI
 
   const products = [
     {
@@ -16,6 +17,7 @@ const ProductList = () => {
       description: "This is the description for product 1",
       price: 50,
       category: "Electronics",
+      color: "Red",
     }, // THÊM MỚI
     {
       id: 2,
@@ -23,6 +25,7 @@ const ProductList = () => {
       description: "This is the description for product 2",
       price: 30,
       category: "Books",
+      color: "Blue",
     }, // THÊM MỚI
     {
       id: 3,
@@ -30,6 +33,7 @@ const ProductList = () => {
       description: "This is the description for product 3",
       price: 20,
       category: "Clothing",
+      color: "Green",
     }, // THÊM MỚI
     {
       id: 4,
@@ -37,6 +41,7 @@ const ProductList = () => {
       description: "This is the description for product 4",
       price: 60,
       category: "Electronics",
+      color: "Red",
     }, // THÊM MỚI
     {
       id: 5,
@@ -44,6 +49,7 @@ const ProductList = () => {
       description: "This is the description for product 5",
       price: 40,
       category: "Books",
+      color: "Blue",
     }, // THÊM MỚI
     {
       id: 6,
@@ -51,6 +57,7 @@ const ProductList = () => {
       description: "This is the description for product 6",
       price: 70,
       category: "Clothing",
+      color: "Green",
     }, // THÊM MỚI
   ];
 
@@ -59,7 +66,8 @@ const ProductList = () => {
       (product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (priceFilter === "" || product.price <= parseInt(priceFilter)) &&
-        (categoryFilter === "" || product.category === categoryFilter) // THÊM MỚI
+        (categoryFilter === "" || product.category === categoryFilter) &&
+        (colorFilter === "" || product.color === colorFilter) // THÊM MỚI
     )
     .sort((a, b) => {
       if (sortOrder === "asc") return a.price - b.price;
@@ -110,16 +118,16 @@ const ProductList = () => {
         <option value="desc">Name: Z to A</option>
       </select>
       <select // THÊM MỚI
-        value={categoryFilter} // THÊM MỚI
-        onChange={(e) => setCategoryFilter(e.target.value)} // THÊM MỚI
-        className="category-filter" // THÊM MỚI
+        value={colorFilter} // THÊM MỚI
+        onChange={(e) => setColorFilter(e.target.value)} // THÊM MỚI
+        className="color-filter" // THÊM MỚI
       >
         {" "}
         {/* THÊM MỚI */}
-        <option value="">All Categories</option> {/* THÊM MỚI */}
-        <option value="Electronics">Electronics</option> {/* THÊM MỚI */}
-        <option value="Books">Books</option> {/* THÊM MỚI */}
-        <option value="Clothing">Clothing</option> {/* THÊM MỚI */}
+        <option value="">All Colors</option> {/* THÊM MỚI */}
+        <option value="Red">Red</option> {/* THÊM MỚI */}
+        <option value="Blue">Blue</option> {/* THÊM MỚI */}
+        <option value="Green">Green</option> {/* THÊM MỚI */}
       </select>{" "}
       {/* THÊM MỚI */}
       {filteredProducts.length > 0 ? (
