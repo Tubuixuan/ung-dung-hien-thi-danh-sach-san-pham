@@ -18,12 +18,10 @@ const ProductList = () => {
 
   useEffect(() => {
     try {
-      // THÊM MỚI
       localStorage.setItem("cart", JSON.stringify(cart));
     } catch (error) {
-      // THÊM MỚI
-      toast.error("Failed to save cart to local storage"); // THÊM MỚI
-    } // THÊM MỚI
+      toast.error(`Failed to save cart to local storage: ${error.message}`); // THÊM MỚI
+    }
   }, [cart]);
 
   const products = [
@@ -98,13 +96,11 @@ const ProductList = () => {
 
   const addToCart = (product) => {
     try {
-      // THÊM MỚI
       setCart([...cart, product]);
       toast.success(`${product.name} added to cart!`);
     } catch (error) {
-      // THÊM MỚI
-      toast.error("Failed to add product to cart"); // THÊM MỚI
-    } // THÊM MỚI
+      toast.error(`Failed to add product to cart: ${error.message}`); // THÊM MỚI
+    }
   };
 
   const removeFromCart = (index) => {
@@ -113,15 +109,13 @@ const ProductList = () => {
     );
     if (confirmed) {
       try {
-        // THÊM MỚI
         const product = cart[index];
         const newCart = cart.filter((_, i) => i !== index);
         setCart(newCart);
         toast.info(`${product.name} removed from cart!`);
       } catch (error) {
-        // THÊM MỚI
-        toast.error("Failed to remove product from cart"); // THÊM MỚI
-      } // THÊM MỚI
+        toast.error(`Failed to remove product from cart: ${error.message}`); // THÊM MỚI
+      }
     }
   };
 
