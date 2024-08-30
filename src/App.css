@@ -30,6 +30,15 @@
 }
 
 .sort-order {
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 200px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.name-sort-order {
   /* THÊM MỚI */
   padding: 10px; /* THÊM MỚI */
   margin-bottom: 20px; /* THÊM MỚI */

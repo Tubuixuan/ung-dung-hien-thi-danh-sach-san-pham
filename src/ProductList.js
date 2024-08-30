@@ -5,7 +5,8 @@ import ProductItem from "./ProductItem";
 const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
-  const [sortOrder, setSortOrder] = useState(""); // THÊM MỚI
+  const [sortOrder, setSortOrder] = useState("");
+  const [nameSortOrder, setNameSortOrder] = useState(""); // THÊM MỚI
 
   const products = [
     {
@@ -53,9 +54,14 @@ const ProductList = () => {
         (priceFilter === "" || product.price <= parseInt(priceFilter))
     )
     .sort((a, b) => {
+      if (sortOrder === "asc") return a.price - b.price;
+      if (sortOrder === "desc") return b.price - a.price;
+      return 0;
+    })
+    .sort((a, b) => {
       // THÊM MỚI
-      if (sortOrder === "asc") return a.price - b.price; // THÊM MỚI
-      if (sortOrder === "desc") return b.price - a.price; // THÊM MỚI
+      if (nameSortOrder === "asc") return a.name.localeCompare(b.name); // THÊM MỚI
+      if (nameSortOrder === "desc") return b.name.localeCompare(a.name); // THÊM MỚI
       return 0; // THÊM MỚI
     }); // THÊM MỚI
 
@@ -78,16 +84,25 @@ const ProductList = () => {
         <option value="50">Under $50</option>
         <option value="70">Under $70</option>
       </select>
+      <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+        className="sort-order"
+      >
+        <option value="">Sort by Price</option>
+        <option value="asc">Price: Low to High</option>
+        <option value="desc">Price: High to Low</option>
+      </select>
       <select // THÊM MỚI
-        value={sortOrder} // THÊM MỚI
-        onChange={(e) => setSortOrder(e.target.value)} // THÊM MỚI
-        className="sort-order" // THÊM MỚI
+        value={nameSortOrder} // THÊM MỚI
+        onChange={(e) => setNameSortOrder(e.target.value)} // THÊM MỚI
+        className="name-sort-order" // THÊM MỚI
       >
         {" "}
         {/* THÊM MỚI */}
-        <option value="">Sort by Price</option> {/* THÊM MỚI */}
-        <option value="asc">Price: Low to High</option> {/* THÊM MỚI */}
-        <option value="desc">Price: High to Low</option> {/* THÊM MỚI */}
+        <option value="">Sort by Name</option> {/* THÊM MỚI */}
+        <option value="asc">Name: A to Z</option> {/* THÊM MỚI */}
+        <option value="desc">Name: Z to A</option> {/* THÊM MỚI */}
       </select>{" "}
       {/* THÊM MỚI */}
       {filteredProducts.length > 0 ? (
