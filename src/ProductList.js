@@ -1,5 +1,7 @@
 // src/ProductList.js
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify"; // THÊM MỚI
+import "react-toastify/dist/ReactToastify.css"; // THÊM MỚI
 import ProductItem from "./ProductItem";
 
 const ProductList = () => {
@@ -90,17 +92,19 @@ const ProductList = () => {
 
   const addToCart = (product) => {
     setCart([...cart, product]);
+    toast.success(`${product.name} added to cart!`); // THÊM MỚI
   };
 
   const removeFromCart = (index) => {
     const confirmed = window.confirm(
-      "Có phải mày muốn xóa sản phẩm này đúng không?"
-    ); // THÊM MỚI
+      "Are you sure you want to remove this item from your cart?"
+    );
     if (confirmed) {
-      // THÊM MỚI
+      const product = cart[index]; // THÊM MỚI
       const newCart = cart.filter((_, i) => i !== index);
       setCart(newCart);
-    } // THÊM MỚI
+      toast.info(`${product.name} removed from cart!`); // THÊM MỚI
+    }
   };
 
   return (
@@ -112,7 +116,6 @@ const ProductList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
-
       <select
         value={priceFilter}
         onChange={(e) => setPriceFilter(e.target.value)}
@@ -123,7 +126,6 @@ const ProductList = () => {
         <option value="50">Under $50</option>
         <option value="70">Under $70</option>
       </select>
-
       <select
         value={sortOrder}
         onChange={(e) => setSortOrder(e.target.value)}
@@ -133,7 +135,6 @@ const ProductList = () => {
         <option value="asc">Price: Low to High</option>
         <option value="desc">Price: High to Low</option>
       </select>
-
       <select
         value={nameSortOrder}
         onChange={(e) => setNameSortOrder(e.target.value)}
@@ -143,7 +144,6 @@ const ProductList = () => {
         <option value="asc">Name: A to Z</option>
         <option value="desc">Name: Z to A</option>
       </select>
-
       <select
         value={colorFilter}
         onChange={(e) => setColorFilter(e.target.value)}
@@ -154,7 +154,6 @@ const ProductList = () => {
         <option value="Blue">Blue</option>
         <option value="Green">Green</option>
       </select>
-
       {filteredProducts.length > 0 ? (
         filteredProducts.map((product) => (
           <ProductItem
@@ -166,7 +165,6 @@ const ProductList = () => {
       ) : (
         <p>No products found</p>
       )}
-
       <div className="cart">
         <h2>Shopping Cart</h2>
         {cart.length > 0 ? (
@@ -182,6 +180,7 @@ const ProductList = () => {
           <p>Your cart is empty</p>
         )}
       </div>
+      <ToastContainer /> {/* THÊM MỚI */}
     </div>
   );
 };
