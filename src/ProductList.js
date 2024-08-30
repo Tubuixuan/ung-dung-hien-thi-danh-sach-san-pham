@@ -15,6 +15,7 @@ const ProductList = () => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
     try {
@@ -76,33 +77,27 @@ const ProductList = () => {
   ];
 
   const retryAction = (action, args, retries = 3) => {
-    // THÊM MỚI
-    let attempt = 0; // THÊM MỚI
+    let attempt = 0;
     const execute = () => {
-      // THÊM MỚI
       try {
-        // THÊM MỚI
-        action(...args); // THÊM MỚI
+        action(...args);
       } catch (error) {
-        // THÊM MỚI
         if (attempt < retries) {
-          // THÊM MỚI
-          attempt++; // THÊM MỚI
-          toast.warn(`Retrying... (${attempt}/${retries})`); // THÊM MỚI
-          execute(); // THÊM MỚI
+          attempt++;
+          toast.warn(`Retrying... (${attempt}/${retries})`);
+          execute();
         } else {
-          // THÊM MỚI
           toast.error(
             `Action failed after ${retries} attempts: ${error.message}`
-          ); // THÊM MỚI
-        } // THÊM MỚI
-      } // THÊM MỚI
-    }; // THÊM MỚI
-    execute(); // THÊM MỚI
-  }; // THÊM MỚI
+          );
+        }
+      }
+    };
+    execute();
+  };
 
   const addToCart = (product) => {
-    retryAction(setCart, [[...cart, product]]); // THÊM MỚI
+    retryAction(setCart, [[...cart, product]]);
     toast.success(`${product.name} added to cart!`);
   };
 
@@ -114,13 +109,58 @@ const ProductList = () => {
       try {
         const product = cart[index];
         const newCart = cart.filter((_, i) => i !== index);
-        retryAction(setCart, [newCart]); // THÊM MỚI
+        retryAction(setCart, [newCart]);
         toast.info(`${product.name} removed from cart!`);
       } catch (error) {
         toast.error(`Failed to remove product from cart: ${error.message}`);
       }
     }
   };
+
+  const toggleSelectItem = (index) => {
+    if (selectedItems.includes(index)) {
+      setSelectedItems(selectedItems.filter((i) => i !== index));
+    } else {
+      setSelectedItems([...selectedItems, index]);
+    }
+  };
+
+  const removeSelectedItems = () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to remove selected items from your cart?"
+    );
+    if (confirmed) {
+      try {
+        const newCart = cart.filter((_, i) => !selectedItems.includes(i));
+        retryAction(setCart, [newCart]);
+        setSelectedItems([]);
+        toast.info(`Selected items removed from cart!`);
+      } catch (error) {
+        toast.error(
+          `Failed to remove selected items from cart: ${error.message}`
+        );
+      }
+    }
+  };
+
+  const filteredProducts = products // Chèn đoạn code mới tại đây
+    .filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (priceFilter === "" || product.price <= parseInt(priceFilter)) &&
+        (categoryFilter === "" || product.category === categoryFilter) &&
+        (colorFilter === "" || product.color === colorFilter)
+    )
+    .sort((a, b) => {
+      if (sortOrder === "asc") return a.price - b.price;
+      if (sortOrder === "desc") return b.price - a.price;
+      return 0;
+    })
+    .sort((a, b) => {
+      if (nameSortOrder === "asc") return a.name.localeCompare(b.name);
+      if (nameSortOrder === "desc") return b.name.localeCompare(a.name);
+      return 0;
+    });
 
   return (
     <div className="product-list">
@@ -174,7 +214,7 @@ const ProductList = () => {
         <option value="Green">Green</option>
       </select>
 
-      {filteredProducts.length > 0 ? (
+      {filteredProducts.length > 0 ? ( // Sử dụng filteredProducts tại đây
         filteredProducts.map((product) => (
           <ProductItem
             key={product.id}
@@ -189,14 +229,22 @@ const ProductList = () => {
       <div className="cart">
         <h2>Shopping Cart</h2>
         {cart.length > 0 ? (
-          cart.map((item, index) => (
-            <div key={index} className="cart-item">
-              <p>
-                {item.name} - ${item.price}
-              </p>
-              <button onClick={() => removeFromCart(index)}>Remove</button>
-            </div>
-          ))
+          <>
+            {cart.map((item, index) => (
+              <div key={index} className="cart-item">
+                <input
+                  type="checkbox"
+                  checked={selectedItems.includes(index)}
+                  onChange={() => toggleSelectItem(index)}
+                />
+                <p>
+                  {item.name} - ${item.price}
+                </p>
+                <button onClick={() => removeFromCart(index)}>Remove</button>
+              </div>
+            ))}
+            <button onClick={removeSelectedItems}>Remove Selected Items</button>
+          </>
         ) : (
           <p>Your cart is empty</p>
         )}
