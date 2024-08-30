@@ -20,7 +20,7 @@ const ProductList = () => {
     try {
       localStorage.setItem("cart", JSON.stringify(cart));
     } catch (error) {
-      toast.error(`Failed to save cart to local storage: ${error.message}`); // THÊM MỚI
+      toast.error(`Failed to save cart to local storage: ${error.message}`);
     }
   }, [cart]);
 
@@ -75,32 +75,35 @@ const ProductList = () => {
     },
   ];
 
-  const filteredProducts = products
-    .filter(
-      (product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (priceFilter === "" || product.price <= parseInt(priceFilter)) &&
-        (categoryFilter === "" || product.category === categoryFilter) &&
-        (colorFilter === "" || product.color === colorFilter)
-    )
-    .sort((a, b) => {
-      if (sortOrder === "asc") return a.price - b.price;
-      if (sortOrder === "desc") return b.price - a.price;
-      return 0;
-    })
-    .sort((a, b) => {
-      if (nameSortOrder === "asc") return a.name.localeCompare(b.name);
-      if (nameSortOrder === "desc") return b.name.localeCompare(a.name);
-      return 0;
-    });
+  const retryAction = (action, args, retries = 3) => {
+    // THÊM MỚI
+    let attempt = 0; // THÊM MỚI
+    const execute = () => {
+      // THÊM MỚI
+      try {
+        // THÊM MỚI
+        action(...args); // THÊM MỚI
+      } catch (error) {
+        // THÊM MỚI
+        if (attempt < retries) {
+          // THÊM MỚI
+          attempt++; // THÊM MỚI
+          toast.warn(`Retrying... (${attempt}/${retries})`); // THÊM MỚI
+          execute(); // THÊM MỚI
+        } else {
+          // THÊM MỚI
+          toast.error(
+            `Action failed after ${retries} attempts: ${error.message}`
+          ); // THÊM MỚI
+        } // THÊM MỚI
+      } // THÊM MỚI
+    }; // THÊM MỚI
+    execute(); // THÊM MỚI
+  }; // THÊM MỚI
 
   const addToCart = (product) => {
-    try {
-      setCart([...cart, product]);
-      toast.success(`${product.name} added to cart!`);
-    } catch (error) {
-      toast.error(`Failed to add product to cart: ${error.message}`); // THÊM MỚI
-    }
+    retryAction(setCart, [[...cart, product]]); // THÊM MỚI
+    toast.success(`${product.name} added to cart!`);
   };
 
   const removeFromCart = (index) => {
@@ -111,10 +114,10 @@ const ProductList = () => {
       try {
         const product = cart[index];
         const newCart = cart.filter((_, i) => i !== index);
-        setCart(newCart);
+        retryAction(setCart, [newCart]); // THÊM MỚI
         toast.info(`${product.name} removed from cart!`);
       } catch (error) {
-        toast.error(`Failed to remove product from cart: ${error.message}`); // THÊM MỚI
+        toast.error(`Failed to remove product from cart: ${error.message}`);
       }
     }
   };
