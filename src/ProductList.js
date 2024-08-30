@@ -4,7 +4,8 @@ import ProductItem from "./ProductItem";
 
 const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [priceFilter, setPriceFilter] = useState(""); // THÊM MỚI
+  const [priceFilter, setPriceFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState(""); // THÊM MỚI
 
   const products = [
     {
@@ -45,11 +46,18 @@ const ProductList = () => {
     },
   ];
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (priceFilter === "" || product.price <= parseInt(priceFilter)) // THÊM MỚI
-  );
+  const filteredProducts = products
+    .filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (priceFilter === "" || product.price <= parseInt(priceFilter))
+    )
+    .sort((a, b) => {
+      // THÊM MỚI
+      if (sortOrder === "asc") return a.price - b.price; // THÊM MỚI
+      if (sortOrder === "desc") return b.price - a.price; // THÊM MỚI
+      return 0; // THÊM MỚI
+    }); // THÊM MỚI
 
   return (
     <div className="product-list">
@@ -60,17 +68,26 @@ const ProductList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
+      <select
+        value={priceFilter}
+        onChange={(e) => setPriceFilter(e.target.value)}
+        className="price-filter"
+      >
+        <option value="">All Prices</option>
+        <option value="20">Under $20</option>
+        <option value="50">Under $50</option>
+        <option value="70">Under $70</option>
+      </select>
       <select // THÊM MỚI
-        value={priceFilter} // THÊM MỚI
-        onChange={(e) => setPriceFilter(e.target.value)} // THÊM MỚI
-        className="price-filter" // THÊM MỚI
+        value={sortOrder} // THÊM MỚI
+        onChange={(e) => setSortOrder(e.target.value)} // THÊM MỚI
+        className="sort-order" // THÊM MỚI
       >
         {" "}
         {/* THÊM MỚI */}
-        <option value="">All Prices</option> {/* THÊM MỚI */}
-        <option value="20">Under $20</option> {/* THÊM MỚI */}
-        <option value="50">Under $50</option> {/* THÊM MỚI */}
-        <option value="70">Under $70</option> {/* THÊM MỚI */}
+        <option value="">Sort by Price</option> {/* THÊM MỚI */}
+        <option value="asc">Price: Low to High</option> {/* THÊM MỚI */}
+        <option value="desc">Price: High to Low</option> {/* THÊM MỚI */}
       </select>{" "}
       {/* THÊM MỚI */}
       {filteredProducts.length > 0 ? (
