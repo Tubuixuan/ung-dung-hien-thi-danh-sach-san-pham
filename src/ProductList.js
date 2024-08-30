@@ -1,5 +1,5 @@
 // src/ProductList.js
-import React, { useState, useEffect } from "react"; // THÊM MỚI
+import React, { useState, useEffect } from "react";
 import ProductItem from "./ProductItem";
 
 const ProductList = () => {
@@ -10,15 +10,13 @@ const ProductList = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [colorFilter, setColorFilter] = useState("");
   const [cart, setCart] = useState(() => {
-    // THÊM MỚI
-    const savedCart = localStorage.getItem("cart"); // THÊM MỚI
-    return savedCart ? JSON.parse(savedCart) : []; // THÊM MỚI
-  }); // THÊM MỚI
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
   useEffect(() => {
-    // THÊM MỚI
-    localStorage.setItem("cart", JSON.stringify(cart)); // THÊM MỚI
-  }, [cart]); // THÊM MỚI
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   const products = [
     {
@@ -95,8 +93,14 @@ const ProductList = () => {
   };
 
   const removeFromCart = (index) => {
-    const newCart = cart.filter((_, i) => i !== index);
-    setCart(newCart);
+    const confirmed = window.confirm(
+      "Có phải mày muốn xóa sản phẩm này đúng không?"
+    ); // THÊM MỚI
+    if (confirmed) {
+      // THÊM MỚI
+      const newCart = cart.filter((_, i) => i !== index);
+      setCart(newCart);
+    } // THÊM MỚI
   };
 
   return (
