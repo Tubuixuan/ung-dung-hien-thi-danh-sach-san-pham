@@ -6,7 +6,7 @@
 
 .product-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   margin-top: 20px;
 }
@@ -57,13 +57,12 @@
 }
 
 .color-filter {
-  /* THÊM MỚI */
-  padding: 10px; /* THÊM MỚI */
-  margin-bottom: 20px; /* THÊM MỚI */
-  width: 200px; /* THÊM MỚI */
-  font-size: 1em; /* THÊM MỚI */
-  border: 1px solid #ccc; /* THÊM MỚI */
-  border-radius: 4px; /* THÊM MỚI */
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 200px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .product-item {
@@ -82,4 +81,39 @@
 .product-item p {
   font-size: 1em;
   color: #555;
+}
+
+.product-item button {
+  /* THÊM MỚI */
+  margin-top: 10px; /* THÊM MỚI */
+  padding: 5px 10px; /* THÊM MỚI */
+  background-color: #007bff; /* THÊM MỚI */
+  color: white; /* THÊM MỚI */
+  border: none; /* THÊM MỚI */
+  border-radius: 4px; /* THÊM MỚI */
+  cursor: pointer; /* THÊM MỚI */
+}
+
+.product-item button:hover {
+  /* THÊM MỚI */
+  background-color: #0056b3; /* THÊM MỚI */
+}
+
+.cart {
+  /* THÊM MỚI */
+  margin-top: 20px; /* THÊM MỚI */
+  width: 300px; /* THÊM MỚI */
+  border-top: 1px solid #ccc; /* THÊM MỚI */
+  padding-top: 10px; /* THÊM MỚI */
+}
+
+.cart-item {
+  /* THÊM MỚI */
+  border-bottom: 1px solid #ccc; /* THÊM MỚI */
+  padding: 10px 0; /* THÊM MỚI */
+}
+
+.cart-item:last-child {
+  /* THÊM MỚI */
+  border-bottom: none; /* THÊM MỚI */
 }

@@ -8,7 +8,8 @@ const ProductList = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [nameSortOrder, setNameSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [colorFilter, setColorFilter] = useState(""); // THÊM MỚI
+  const [colorFilter, setColorFilter] = useState("");
+  const [cart, setCart] = useState([]); // THÊM MỚI
 
   const products = [
     {
@@ -18,7 +19,7 @@ const ProductList = () => {
       price: 50,
       category: "Electronics",
       color: "Red",
-    }, // THÊM MỚI
+    },
     {
       id: 2,
       name: "Product 2",
@@ -26,7 +27,7 @@ const ProductList = () => {
       price: 30,
       category: "Books",
       color: "Blue",
-    }, // THÊM MỚI
+    },
     {
       id: 3,
       name: "Product 3",
@@ -34,7 +35,7 @@ const ProductList = () => {
       price: 20,
       category: "Clothing",
       color: "Green",
-    }, // THÊM MỚI
+    },
     {
       id: 4,
       name: "Product 4",
@@ -42,7 +43,7 @@ const ProductList = () => {
       price: 60,
       category: "Electronics",
       color: "Red",
-    }, // THÊM MỚI
+    },
     {
       id: 5,
       name: "Product 5",
@@ -50,7 +51,7 @@ const ProductList = () => {
       price: 40,
       category: "Books",
       color: "Blue",
-    }, // THÊM MỚI
+    },
     {
       id: 6,
       name: "Product 6",
@@ -58,7 +59,7 @@ const ProductList = () => {
       price: 70,
       category: "Clothing",
       color: "Green",
-    }, // THÊM MỚI
+    },
   ];
 
   const filteredProducts = products
@@ -67,7 +68,7 @@ const ProductList = () => {
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (priceFilter === "" || product.price <= parseInt(priceFilter)) &&
         (categoryFilter === "" || product.category === categoryFilter) &&
-        (colorFilter === "" || product.color === colorFilter) // THÊM MỚI
+        (colorFilter === "" || product.color === colorFilter)
     )
     .sort((a, b) => {
       if (sortOrder === "asc") return a.price - b.price;
@@ -80,6 +81,11 @@ const ProductList = () => {
       return 0;
     });
 
+  const addToCart = (product) => {
+    // THÊM MỚI
+    setCart([...cart, product]); // THÊM MỚI
+  }; // THÊM MỚI
+
   return (
     <div className="product-list">
       <input
@@ -89,6 +95,7 @@ const ProductList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
+
       <select
         value={priceFilter}
         onChange={(e) => setPriceFilter(e.target.value)}
@@ -99,6 +106,7 @@ const ProductList = () => {
         <option value="50">Under $50</option>
         <option value="70">Under $70</option>
       </select>
+
       <select
         value={sortOrder}
         onChange={(e) => setSortOrder(e.target.value)}
@@ -108,6 +116,7 @@ const ProductList = () => {
         <option value="asc">Price: Low to High</option>
         <option value="desc">Price: High to Low</option>
       </select>
+
       <select
         value={nameSortOrder}
         onChange={(e) => setNameSortOrder(e.target.value)}
@@ -117,26 +126,46 @@ const ProductList = () => {
         <option value="asc">Name: A to Z</option>
         <option value="desc">Name: Z to A</option>
       </select>
-      <select // THÊM MỚI
-        value={colorFilter} // THÊM MỚI
-        onChange={(e) => setColorFilter(e.target.value)} // THÊM MỚI
-        className="color-filter" // THÊM MỚI
+
+      <select
+        value={colorFilter}
+        onChange={(e) => setColorFilter(e.target.value)}
+        className="color-filter"
       >
-        {" "}
-        {/* THÊM MỚI */}
-        <option value="">All Colors</option> {/* THÊM MỚI */}
-        <option value="Red">Red</option> {/* THÊM MỚI */}
-        <option value="Blue">Blue</option> {/* THÊM MỚI */}
-        <option value="Green">Green</option> {/* THÊM MỚI */}
-      </select>{" "}
-      {/* THÊM MỚI */}
+        <option value="">All Colors</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
+        <option value="Green">Green</option>
+      </select>
+
       {filteredProducts.length > 0 ? (
         filteredProducts.map((product) => (
-          <ProductItem key={product.id} product={product} />
+          <ProductItem
+            key={product.id}
+            product={product}
+            addToCart={addToCart}
+          /> //THÊM MỚI
         ))
       ) : (
         <p>No products found</p>
       )}
+
+      {/* Thêm mới */}
+      <div className="cart">
+        <h2>Shopping Cart</h2>
+        {cart.length > 0 ? (
+          cart.map((item, index) => (
+            <div key={index} className="cart-item">
+              <p>
+                {item.name} - ${item.price}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>Your cart is empty</p>
+        )}
+      </div>
+      {/* THÊM MỚI */}
     </div>
   );
 };
