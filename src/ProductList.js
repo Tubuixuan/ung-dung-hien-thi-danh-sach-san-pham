@@ -9,7 +9,7 @@ const ProductList = () => {
   const [nameSortOrder, setNameSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [colorFilter, setColorFilter] = useState("");
-  const [cart, setCart] = useState([]); // THÊM MỚI
+  const [cart, setCart] = useState([]);
 
   const products = [
     {
@@ -82,8 +82,13 @@ const ProductList = () => {
     });
 
   const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  const removeFromCart = (index) => {
     // THÊM MỚI
-    setCart([...cart, product]); // THÊM MỚI
+    const newCart = cart.filter((_, i) => i !== index); // THÊM MỚI
+    setCart(newCart); // THÊM MỚI
   }; // THÊM MỚI
 
   return (
@@ -144,13 +149,12 @@ const ProductList = () => {
             key={product.id}
             product={product}
             addToCart={addToCart}
-          /> //THÊM MỚI
+          />
         ))
       ) : (
         <p>No products found</p>
       )}
 
-      {/* Thêm mới */}
       <div className="cart">
         <h2>Shopping Cart</h2>
         {cart.length > 0 ? (
@@ -159,13 +163,14 @@ const ProductList = () => {
               <p>
                 {item.name} - ${item.price}
               </p>
+              <button onClick={() => removeFromCart(index)}>Remove</button>{" "}
+              {/* THÊM MỚI */}
             </div>
           ))
         ) : (
           <p>Your cart is empty</p>
         )}
       </div>
-      {/* THÊM MỚI */}
     </div>
   );
 };

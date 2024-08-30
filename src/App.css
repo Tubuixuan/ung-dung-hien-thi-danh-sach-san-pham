@@ -84,36 +84,47 @@
 }
 
 .product-item button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.product-item button:hover {
+  background-color: #0056b3;
+}
+
+.cart {
+  margin-top: 20px;
+  width: 300px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.cart-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item button {
   /* THÊM MỚI */
   margin-top: 10px; /* THÊM MỚI */
   padding: 5px 10px; /* THÊM MỚI */
-  background-color: #007bff; /* THÊM MỚI */
+  background-color: #dc3545; /* THÊM MỚI */
   color: white; /* THÊM MỚI */
   border: none; /* THÊM MỚI */
   border-radius: 4px; /* THÊM MỚI */
   cursor: pointer; /* THÊM MỚI */
 }
 
-.product-item button:hover {
+.cart-item button:hover {
   /* THÊM MỚI */
-  background-color: #0056b3; /* THÊM MỚI */
-}
-
-.cart {
-  /* THÊM MỚI */
-  margin-top: 20px; /* THÊM MỚI */
-  width: 300px; /* THÊM MỚI */
-  border-top: 1px solid #ccc; /* THÊM MỚI */
-  padding-top: 10px; /* THÊM MỚI */
-}
-
-.cart-item {
-  /* THÊM MỚI */
-  border-bottom: 1px solid #ccc; /* THÊM MỚI */
-  padding: 10px 0; /* THÊM MỚI */
-}
-
-.cart-item:last-child {
-  /* THÊM MỚI */
-  border-bottom: none; /* THÊM MỚI */
+  background-color: #c82333; /* THÊM MỚI */
 }
