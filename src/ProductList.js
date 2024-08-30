@@ -1,5 +1,5 @@
 // src/ProductList.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // THÊM MỚI
 import ProductItem from "./ProductItem";
 
 const ProductList = () => {
@@ -9,7 +9,16 @@ const ProductList = () => {
   const [nameSortOrder, setNameSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [colorFilter, setColorFilter] = useState("");
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    // THÊM MỚI
+    const savedCart = localStorage.getItem("cart"); // THÊM MỚI
+    return savedCart ? JSON.parse(savedCart) : []; // THÊM MỚI
+  }); // THÊM MỚI
+
+  useEffect(() => {
+    // THÊM MỚI
+    localStorage.setItem("cart", JSON.stringify(cart)); // THÊM MỚI
+  }, [cart]); // THÊM MỚI
 
   const products = [
     {
@@ -86,10 +95,9 @@ const ProductList = () => {
   };
 
   const removeFromCart = (index) => {
-    // THÊM MỚI
-    const newCart = cart.filter((_, i) => i !== index); // THÊM MỚI
-    setCart(newCart); // THÊM MỚI
-  }; // THÊM MỚI
+    const newCart = cart.filter((_, i) => i !== index);
+    setCart(newCart);
+  };
 
   return (
     <div className="product-list">
@@ -163,8 +171,7 @@ const ProductList = () => {
               <p>
                 {item.name} - ${item.price}
               </p>
-              <button onClick={() => removeFromCart(index)}>Remove</button>{" "}
-              {/* THÊM MỚI */}
+              <button onClick={() => removeFromCart(index)}>Remove</button>
             </div>
           ))
         ) : (
