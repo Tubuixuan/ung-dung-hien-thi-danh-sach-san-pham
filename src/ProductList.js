@@ -97,7 +97,18 @@ const ProductList = () => {
   };
 
   const addToCart = (product) => {
-    retryAction(setCart, [[...cart, product]]);
+    const existingProductIndex = cart.findIndex(
+      (item) => item.id === product.id
+    ); // THÊM MỚI
+    if (existingProductIndex !== -1) {
+      // THÊM MỚI
+      const newCart = [...cart]; // THÊM MỚI
+      newCart[existingProductIndex].quantity += 1; // THÊM MỚI
+      retryAction(setCart, [newCart]); // THÊM MỚI
+    } else {
+      // THÊM MỚI
+      retryAction(setCart, [[...cart, { ...product, quantity: 1 }]]); // THÊM MỚI
+    } // THÊM MỚI
     toast.success(`${product.name} added to cart!`);
   };
 
@@ -143,7 +154,27 @@ const ProductList = () => {
     }
   };
 
-  const filteredProducts = products // Chèn đoạn code mới tại đây
+  const increaseQuantity = (index) => {
+    // THÊM MỚI
+    const newCart = [...cart]; // THÊM MỚI
+    newCart[index].quantity += 1; // THÊM MỚI
+    retryAction(setCart, [newCart]); // THÊM MỚI
+  }; // THÊM MỚI
+
+  const decreaseQuantity = (index) => {
+    // THÊM MỚI
+    const newCart = [...cart]; // THÊM MỚI
+    if (newCart[index].quantity > 1) {
+      // THÊM MỚI
+      newCart[index].quantity -= 1; // THÊM MỚI
+      retryAction(setCart, [newCart]); // THÊM MỚI
+    } else {
+      // THÊM MỚI
+      removeFromCart(index); // THÊM MỚI
+    } // THÊM MỚI
+  }; // THÊM MỚI
+
+  const filteredProducts = products
     .filter(
       (product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -214,7 +245,7 @@ const ProductList = () => {
         <option value="Green">Green</option>
       </select>
 
-      {filteredProducts.length > 0 ? ( // Sử dụng filteredProducts tại đây
+      {filteredProducts.length > 0 ? (
         filteredProducts.map((product) => (
           <ProductItem
             key={product.id}
@@ -238,8 +269,13 @@ const ProductList = () => {
                   onChange={() => toggleSelectItem(index)}
                 />
                 <p>
-                  {item.name} - ${item.price}
+                  {item.name} - ${item.price} - Quantity: {item.quantity}{" "}
+                  {/* THÊM MỚI */}
                 </p>
+                <button onClick={() => increaseQuantity(index)}>+</button>{" "}
+                {/* THÊM MỚI */}
+                <button onClick={() => decreaseQuantity(index)}>-</button>{" "}
+                {/* THÊM MỚI */}
                 <button onClick={() => removeFromCart(index)}>Remove</button>
               </div>
             ))}
